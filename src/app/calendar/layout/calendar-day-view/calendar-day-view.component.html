@@ -1,8 +1,8 @@
 <div class="day-view-container">
   <div class="header">
-    <button (click)="previousDay()">&lt; Previous</button>
+    <button (click)="changeDay(-1)">&lt; Previous</button>
     <h2>{{ currentDate.toDateString() }}</h2>
-    <button (click)="nextDay()">Next &gt;</button>
+    <button (click)="changeDay(1)">Next &gt;</button>
   </div>
 
   <div class="calendar-grid">
@@ -10,17 +10,20 @@
     <div class="hour-slot">
       <span class="hour-label">{{ hour }}</span>
 
-      @for (event of filteredEvents; track event.name) { @if
-      (getHours(event.startDate, hour)) {
-      <div class="event">
-        <strong>{{ event.name }}</strong>
-        <p>{{ event.description }}</p>
-        <span
-          >{{ event.startDate | date : "shortTime" }} -
-          {{ event.endDate | date : "shortTime" }}</span
-        >
+      @if (hoursToDisplay()[hour]) {
+      <div
+        class="event"
+        [style.gridRow]="'span ' + hoursToDisplay()[hour].duration"
+      >
+        <strong>{{ hoursToDisplay()[hour].event.name }}</strong>
+        <p>{{ hoursToDisplay()[hour].event.description }}</p>
+        <span>
+          {{ hoursToDisplay()[hour].event.startDate | date : "shortTime" }}
+          -
+          {{ hoursToDisplay()[hour].event.endDate | date : "shortTime" }}
+        </span>
       </div>
-      } }
+      }
     </div>
     }
   </div>

@@ -6,9 +6,12 @@ import {
   OnChanges,
   SimpleChanges,
   ChangeDetectionStrategy,
+  signal,
 } from '@angular/core';
 import { Event } from '../../models/event.model';
 import { CommonModule } from '@angular/common';
+
+type HoursToDisplay = Record<string, { event: Event; duration: number }>;
 
 @Component({
   selector: 'app-calendar-day-view',
@@ -20,42 +23,50 @@ import { CommonModule } from '@angular/common';
 export class CalendarDayViewComponent implements OnChanges {
   @Input() currentDate!: Date;
   @Input() events: Event[] = [];
-
   @Output() dateChanged = new EventEmitter<Date>();
 
-  filteredEvents: Event[] = [];
+  hoursToDisplay = signal<HoursToDisplay>({});
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['currentDate'] || changes['events']) {
-      this.filterEventsToCurrentDate();
+      this.updateView();
     }
   }
 
-  private filterEventsToCurrentDate(): void {
-    this.filteredEvents = this.events.filter(
-      (event) =>
-        new Date(event.startDate).toDateString() ===
-        this.currentDate.toDateString()
+  changeDay(offset: number): void {
+    const newDate = new Date(this.currentDate);
+    newDate.setDate(newDate.getDate() + offset);
+    this.dateChanged.emit(newDate);
+  }
+
+  private updateView(): void {
+    this.hoursToDisplay.set(this.computeEventsForDay());
+  }
+
+  private computeEventsForDay(): HoursToDisplay {
+    return this.filterEventsBySelectedDate().reduce((acc, event) => {
+      const startHour = this.getHour(event.startDate);
+      const endHour = this.getHour(event.endDate);
+      acc[`${startHour}:00`] = { event, duration: endHour - startHour + 1 };
+      return acc;
+    }, {} as Record<string, { event: Event; duration: number }>);
+  }
+
+  private filterEventsBySelectedDate(): Event[] {
+    return this.events.filter((event) =>
+      this.isSameDay(new Date(event.startDate), this.currentDate)
     );
   }
 
-  previousDay(): void {
-    const newDate = new Date(this.currentDate);
-    newDate.setDate(newDate.getDate() - 1);
-    this.dateChanged.emit(newDate);
+  private isSameDay(date1: Date, date2: Date): boolean {
+    return date1.toDateString() === date2.toDateString();
   }
 
-  nextDay(): void {
-    const newDate = new Date(this.currentDate);
-    newDate.setDate(newDate.getDate() + 1);
-    this.dateChanged.emit(newDate);
-  }
-
-  getHours(eventDate: string, hour: string): boolean {
-    return new Date(eventDate).getHours() == +hour.split(':')[0];
+  private getHour(date: string | Date): number {
+    return new Date(date).getHours();
   }
 
   get hours(): string[] {
-    return [...Array(24).keys()].map((hour) => `${hour}:00`);
+    return Array.from({ length: 24 }, (_, hour) => `${hour}:00`);
   }
 }
