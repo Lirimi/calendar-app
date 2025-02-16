@@ -26,4 +26,6 @@ export class CalendarUtil {
     }, {} as { [day: string]: Event[] });
     return filteredEventsBasedOnMotth;
   }
+
+  // add other helper functions here and use them in the components or inside the class itself for better abstraction as needed
 }
