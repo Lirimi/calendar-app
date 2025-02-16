@@ -1,0 +1,35 @@
+<div class="week-view-container">
+  <div class="header">
+    <button (click)="previousWeek()">&lt; Previous</button>
+    <h2>{{ weekDays[0].toDateString() }} - {{ weekDays[6].toDateString() }}</h2>
+    <button (click)="nextWeek()">Next &gt;</button>
+  </div>
+
+  <div class="week-grid">
+    @for (day of weekDays; track day) {
+    <div class="day-label">
+      <strong>{{ day.toDateString() }}</strong>
+    </div>
+    } @for (hour of hours; track hour) {
+    <div class="hour-row">
+      <div class="hour-label">{{ hour }}</div>
+
+      @for (day of weekDays; track day) {
+      <div class="day-slot">
+        @for (event of filteredEvents; track event.name) { @if
+        (isSameDate(event.startDate, day, hour)) {
+        <div class="event">
+          <strong>{{ event.name }}</strong>
+          <p>{{ event.description }}</p>
+          <span>
+            {{ event.startDate | date : "shortTime" }} -
+            {{ event.endDate | date : "shortTime" }}
+          </span>
+        </div>
+        } }
+      </div>
+      }
+    </div>
+    }
+  </div>
+</div>

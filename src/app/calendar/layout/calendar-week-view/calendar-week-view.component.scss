@@ -1,0 +1,53 @@
+.week-view-container {
+  width: auto;
+
+  .header {
+    padding: 2px;
+    font-size: 18px;
+
+    button {
+      padding: 2px;
+    }
+  }
+
+  .week-grid {
+    display: grid;
+    grid-template-columns: 50px repeat(7, 1fr);
+    font-size: 14px;
+
+    .week-days {
+      display: contents;
+    }
+
+    .day-label {
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .hour-row {
+      display: contents;
+
+      .hour-label {
+        text-align: right;
+        font-weight: bold;
+        padding: 2px;
+      }
+
+      .day-slot {
+        min-height: 30px;
+        position: relative;
+      }
+
+      .event {
+        color: red;
+        font-weight: bold;
+        font-size: 12px;
+        background: rgba(255, 0, 0, 0.1);
+        position: absolute;
+        width: 90%;
+        left: 5%;
+        padding: 2px;
+      }
+    }
+  }
+}

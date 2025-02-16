@@ -1,0 +1,26 @@
+<div class="month-view-container">
+  <div class="header">
+    <button (click)="previousMonth()">&lt; Previous</button>
+    <h2>{{ currentDate | date : "MMMM yyyy" }}</h2>
+    <button (click)="nextMonth()">Next &gt;</button>
+  </div>
+
+  <div class="month-days">
+    @for (day of monthDays; track day) {
+    <div class="day-box" (click)="selectDate(day)">
+      <strong>{{ day | date : "EEE, MMM d" }}</strong>
+
+      @for (event of filteredEvents[day]; track event.name) {
+      <div class="event">
+        <strong>{{ event.name }}</strong>
+        <p>{{ event.description }}</p>
+        <span
+          >{{ event.startDate | date : "HH:mm" }} -
+          {{ event.endDate | date : "HH:mm" }}</span
+        >
+      </div>
+      }
+    </div>
+    }
+  </div>
+</div>
