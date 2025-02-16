@@ -10,8 +10,8 @@ export class CalendarService {
     {
       name: 'Event 1',
       description: 'Description for Event 1',
-      startDate: '2024-06-10T10:00:00Z',
-      endDate: '2024-06-10T12:00:00Z',
+      startDate: '2025-02-16T10:00:00Z',
+      endDate: '2025-02-16T13:00:00Z',
       location: 'Location 1',
       guests: [
         { name: 'Guest 1', email: 'guest1@example.com', position: 'Speaker' },

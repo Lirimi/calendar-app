@@ -5,6 +5,14 @@
 }
 
 .hour-slot {
-  display: flex;
+  display: block;
   align-items: center;
+  position: relative;
+}
+
+.event {
+  background: red;
+  position: absolute;
+  top: 0;
+  left: 50px;
 }

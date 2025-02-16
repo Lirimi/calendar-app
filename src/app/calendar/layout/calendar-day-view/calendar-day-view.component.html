@@ -13,7 +13,7 @@
       @if (hoursToDisplay()[hour]) {
       <div
         class="event"
-        [style.gridRow]="'span ' + hoursToDisplay()[hour].duration"
+        [style.height]="'calc(50px * ' + hoursToDisplay()[hour].duration + ')'"
       >
         <strong>{{ hoursToDisplay()[hour].event.name }}</strong>
         <p>{{ hoursToDisplay()[hour].event.description }}</p>
